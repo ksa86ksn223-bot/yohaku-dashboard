@@ -196,7 +196,7 @@ def main() -> None:
         phase = latest.get("phase", "Phase 2") if latest else "Phase 2"
         agents = latest.get("active_agents", 16) if latest else 16
 
-        st.metric("Governance Phase", phase)
+        st.metric("ガバナンスPhase", phase)
         st.metric("稼働Agent数", agents)
         st.divider()
         st.caption(f"最終更新: {now_str}")
