@@ -160,9 +160,17 @@ def fetch_psychology_stats(client) -> dict[str, int]:
 # ---------------------------------------------------------------------------
 
 def render_status_badge(status: str | None) -> str:
-    """ステータス文字列から表示用バッジを返す。"""
+    """ステータス文字列から表示用バッジを返す。
+
+    os_summary_agent.py の determine_status() は "🟢 正常" のように
+    絵文字付きで値を保存するため、既に絵文字が含まれる場合は追加しない。
+    """
     if status is None:
         return "⚪ データなし"
+    # 既に絵文字が先頭についている場合はそのまま返す
+    if status.startswith(("🔴", "🟡", "🟢", "⚪")):
+        return status
+    # 絵文字なし（旧データ互換）の場合はキーワードで判定して付与
     if "🔴" in status or "異常" in status:
         return f"🔴 {status}"
     if "🟡" in status or "警告" in status:
@@ -185,8 +193,8 @@ def main() -> None:
         else:
             latest = None
 
-        phase = latest.get("phase", "Phase1") if latest else "Phase1"
-        agents = latest.get("active_agents", 0) if latest else 0
+        phase = latest.get("phase", "Phase 2") if latest else "Phase 2"
+        agents = latest.get("active_agents", 16) if latest else 16
 
         st.metric("Governance Phase", phase)
         st.metric("稼働Agent数", agents)
