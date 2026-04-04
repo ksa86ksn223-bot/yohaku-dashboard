@@ -222,8 +222,8 @@ def main() -> None:
 
     latest = fetch_latest_os_summary(client)
 
-    # ── 上段: OS状態 3カラム ───────────────────────────────────────────
-    col1, col2, col3 = st.columns(3)
+    # ── 上段: OS状態 4カラム ───────────────────────────────────────────
+    col1, col2, col3, col4 = st.columns(4)
 
     with col1:
         status_display = latest.get("status", "データなし") if latest else "データなし"
@@ -240,6 +240,22 @@ def main() -> None:
         errors = latest.get("error_count", 0) if latest else 0
         delta_color = "inverse" if errors > 0 else "off"
         st.metric(label="今日のエラー数", value=errors, delta_color=delta_color)
+
+    with col4:
+        if latest:
+            rate = latest.get("approval_rate")
+            approved = latest.get("approved_count", 0)
+            rejected = latest.get("rejected_count", 0)
+            if rate is not None:
+                rate_pct = f"{rate * 100:.1f}%"
+                rate_sub = f"承認{approved}/却下{rejected}"
+            else:
+                rate_pct = "N/A"
+                rate_sub = f"承認{approved}/却下{rejected}"
+        else:
+            rate_pct = "N/A"
+            rate_sub = "承認0/却下0"
+        st.metric(label="承認率", value=rate_pct, help=rate_sub)
 
     st.divider()
 
