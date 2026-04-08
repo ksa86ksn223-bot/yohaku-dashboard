@@ -1,0 +1,13 @@
+{
+  "framework": "nextjs",
+  "buildCommand": "npm run build",
+  "devCommand": "npm run dev",
+  "installCommand": "npm install",
+  "env": {
+    "DASHBOARD_PASSWORD": "@dashboard_password",
+    "DASHBOARD_SECRET": "@dashboard_secret",
+    "SUPABASE_URL": "@supabase_url",
+    "SUPABASE_ANON_KEY": "@supabase_anon_key",
+    "YOHAKU_OS_PHASE": "Phase 3"
+  }
+}
